@@ -1,9 +1,21 @@
-# Archivo donde especifique la instalación de librerias  y confoguraciones necesarias para contenedores personalizados.
-# 1. Partimos de una imagen de Docker con apache instalado
-# FROM ubuntu + instalación personal de apache
-FROM httpd:2.4
-# Debemos consultar el docker hun (de la imagen) para ver variables de entorno, puertos, directorios de trabajo, etc.
-# Directorio de trabajo dentro de la maquina(contenedor) 
-WORKDIR /usr/local/apache2/htdocs
-COPY ../src/ .
-EXPOSE 80
+### partimos de una imagen ubuntu donde se instalará apache
+FROM  ubuntu
+ARG USUARIO
+# **** Instalaciones ****
+RUN apt update && apt install -yq --no-install-recommends \ 
+    apache2 \
+    nano \
+    curl \
+    net-tools iputils-ping
+# **** Creación de usuarios ****
+# comando interactivos piden datos por terminal
+# comandos por lotes (los datos se ponen como parámetros del comando)
+RUN useradd -rm -d /home/rocio -s /bin/bash {USUARIO} 
+RUN echo "${USUARIO}:1234" | chpasswd 
+RUN echo "Bienvenido al mundo de {USUARIO}" > /home/{USUARIO}/hello.txt
+# consultar el docker hub (imagen) para ver varibles de entorno, directorios, etc.
+# Directorio de trabajo dentro del contenedor
+WORKDIR /var/www/html 
+COPY ./src .
+EXPOSE 80 
+CMD ["apache2ctl", "-D", "FOREGROUND"]

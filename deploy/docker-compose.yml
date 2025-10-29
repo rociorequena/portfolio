@@ -1,0 +1,10 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      args: #Variables en Dockerfile para la construccion (build) de la imagen
+      - USUARIO=rocio
+    container_name: ctportfolio
+    ports:
+      - "8810:80"

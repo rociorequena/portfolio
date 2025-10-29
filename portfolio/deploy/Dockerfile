@@ -1,21 +1,29 @@
-### partimos de una imagen ubuntu donde se instalará apache
-FROM  ubuntu
-ARG USUARIO
-# **** Instalaciones ****
-RUN apt update && apt install -yq --no-install-recommends \ 
+### Partimos de una imagen ubuntu donde se instalará apache
+FROM ubuntu:latest
+
+ARG USUARIO=rocio
+
+## Instalaciones básicas
+RUN apt update && apt install -yq --no-install-recommends \
     apache2 \
     nano \
     curl \
-    net-tools iputils-ping
-# **** Creación de usuarios ****
-# comando interactivos piden datos por terminal
-# comandos por lotes (los datos se ponen como parámetros del comando)
-RUN useradd -rm -d /home/rocio -s /bin/bash {USUARIO} 
-RUN echo "${USUARIO}:1234" | chpasswd 
-RUN echo "Bienvenido al mundo de {USUARIO}" > /home/{USUARIO}/hello.txt
-# consultar el docker hub (imagen) para ver varibles de entorno, directorios, etc.
-# Directorio de trabajo dentro del contenedor
-WORKDIR /var/www/html 
+    net-tools \
+    iputils-ping && \
+    rm -rf /var/lib/apt/lists/*
+
+### Creación de usuarios
+RUN useradd -rm -d /home/${USUARIO} -s /bin/bash ${USUARIO}
+RUN echo "Bienvenido al mundo de ${USUARIO}" > /home/${USUARIO}/hello.txt
+
+### Directorio de trabajo dentro del contenedor
+WORKDIR /var/www/html
+
+### Copiamos el código fuente
 COPY ./src .
-EXPOSE 80 
+
+### Exponemos el puerto
+EXPOSE 80
+
+### Iniciamos Apache en primer plano
 CMD ["apache2ctl", "-D", "FOREGROUND"]

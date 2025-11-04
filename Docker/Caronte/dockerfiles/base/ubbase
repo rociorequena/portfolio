@@ -6,7 +6,14 @@ RUN apt update && apt install -yq --no-install-recommends \
     git curl \
     net-tools iputils-ping \
     sudo
+RUN mkdir /root/admin
+RUN ./admin/start.sh /root/admin
+RUN chmod +x /root/admin/start.sh
 
 RUN useradd -rm -d /home/${USUARIO} -s /bin/bash ${USUARIO}
 RUN echo "${USUARIO}:${PASSWORD}" | chpasswd 
 RUN echo "Bienvenido a la empresa, ${USUARIO}" > /home/${USUARIO}/hola.txt
+
+#CMD [ "tail", "-f", "/dev/null" ]
+
+ENTRYPOINT [ "/root/admin/start.sh" ]

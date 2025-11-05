@@ -6,9 +6,11 @@ RUN apt update && apt install -yq --no-install-recommends \
     git curl \
     net-tools iputils-ping \
     sudo
-RUN mkdir /root/admin
-RUN ./admin/start.sh /root/admin
-RUN chmod +x /root/admin/start.sh
+#copiar los scrip's del entrypoint (sc ppal ---> otrs sc' personalizadas)
+RUN mkdir -p /root/admin/base
+WORKDIR /root/admin/base
+COPY ./dockerfiles/base/admin/start.sh .
+RUN chmod +x ./start.sh
 
 RUN useradd -rm -d /home/${USUARIO} -s /bin/bash ${USUARIO}
 RUN echo "${USUARIO}:${PASSWORD}" | chpasswd 

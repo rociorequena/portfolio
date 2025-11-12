@@ -1,10 +1,10 @@
 services:
   web:
     build:
-      context: ..
-      dockerfile: deploy/Dockerfile
-      args: #Variables en Dockerfile para la construccion (build) de la imagen
+      context: /home/rocio/Devops/Docker/Caronte
+      dockerfile: dockerfiles/base/ubbase
+      args:
+       # - USUARIO=rocio
+    container_name: ctpbase
+    environment:
       - USUARIO=rocio
-    container_name: ctportfolio
-    ports:
-      - "8810:80"

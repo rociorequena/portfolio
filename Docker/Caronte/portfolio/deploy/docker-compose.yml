@@ -3,7 +3,8 @@ services:
     build:
       context: /home/rocio/Devops/Docker/Caronte
       dockerfile: dockerfiles/base/ubbase
-      args: #Variables en Dockerfile para la construccion (build) de la imagen
-      - USUARIO=rocio
-      - PASSWORD=1234
+      args:
+        USUARIO: rocio
     container_name: ctpbase
+    environment:
+      - USUARIO=rocio

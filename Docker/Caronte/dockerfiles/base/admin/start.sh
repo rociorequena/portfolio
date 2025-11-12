@@ -1,15 +1,19 @@
 #!/bin/bash
+# carga las variables de entono pasadas desde el D.Compose
+set -e
 
-newUser(){
-useradd -rm -d /home/rocio -s /bin/bash rocio
-echo "rocio:1234" | chpasswd 
-echo "Bienvenida Rocio!"> /home/rocio/bienvenida.txt
-}
+source /root/admin/base/usuarios/mainUsuarios.sh
 
-main(){
+main() {
+    # gestion usuario ---> getsUser.sh
+    # gestion del sudo ---> gestSudo.sh
+    # gestion del ssh ---> gestSsh.sh
+    # ...
+    touch /root/logs/informe.log
     newUser
-tail -f /dev/null
-## script's que se encargan de configurar el contenedor y la imagen.
+    # encargada de dejar este contendor vivo en BGround
+    tail -f /dev/null
+    ## script's que se encargar de configurar el imagen/contenedor
 }
 
 main

@@ -1,31 +1,25 @@
 #!/bin/bash
-# carga las variables de entono pasadas desde el D.Compose
-set -e
 
-source /root/admin/base/usuarios/mainUsuarios.sh
-source /root/admin/base/ssh/mainssh.sh
+set -e #Carga las variables de entorno, pasadas desde el docker-compose.
+source /root/admin/base/usuarios/mainusers.sh
+source /root/admin/base/ssh/main-ssh.sh
+#source /root/admin/base/sudo/main-sudo.sh
 
-# source /root/admin/base/usuarios/makeUsuariosPostgress
-
-main() {
-    # gestion usuario ---> getsUser.sh
-    # gestion del sudo ---> gestSudo.sh
-    # gestion del ssh ---> gestSsh.sh
-    # ...
+main(){
     touch /root/logs/informe.log
-    resuser=newUser
-    if [ "$resuser" -eq 0 ]
-    then
-        make_ssh
+    newUser
+    reuser=$?
+
+    if [ $reuser -eq 0 ]; then
+     configurar-ssh
     fi
 
-    if [ "$?" -eq 0 ]
-    then
-        make_sudo
+    if [ $reuser -eq 0 ]; then
+      configurar-sudo
     fi
-    # encargada de dejar este contendor vivo en BGround
-    tail -f /dev/null
-    ## script's que se encargar de configurar el imagen/contenedor
+    
+    tail -f /dev/null #Encargada de dejar el contenedor vivo en background
 }
 
 main
+

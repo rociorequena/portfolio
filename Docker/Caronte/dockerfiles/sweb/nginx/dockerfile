@@ -1,0 +1,6 @@
+ARG AUTOR
+FROM ${AUTOR}/ubuntubase
+
+
+RUN mkdir -p /var/log/nginx
+EXPOSE 80

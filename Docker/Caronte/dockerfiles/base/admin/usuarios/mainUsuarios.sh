@@ -1,4 +1,6 @@
 #!/bin/bash
+#set -e
+
 check_usuario(){
     if grep -q "${USUARIO}" /etc/passwd
     then    
@@ -22,6 +24,7 @@ check_home(){
 }
 newUser(){
     check_usuario
+    # `cat /et/password | grep rocio`
     if [ "$?" -eq 0 ] #no existe usuario en passwd
     then 
         check_home

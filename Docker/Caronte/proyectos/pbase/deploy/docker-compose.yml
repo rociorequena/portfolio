@@ -2,22 +2,19 @@ services:
   web:
     build: 
       context: ${CONTEXTO}
-      #args: #variables en dockerfile para la construcción de la imagen
-      #  - USUARIO=rocio
       dockerfile: ./dockerfiles/base/ubbase
-    container_name: ${NOMBRE}
-    ports:
-      - "${PORT_SSH}:${PORT_SSH}"
+    image: rocio21/ubbase
+    container_name: ${CONTENEDOR}
     env_file:
       - ./.env
     volumes:
       - ./logs:/root/logs
     networks:
-      netcaronte:
-          ipv4_address: ${IP}
+      netcarontebase:
+        ipv4_address: ${IP}
 
 networks:
-  netcaronte:
+  netcarontebase:
     ipam:
       driver: default
       config:

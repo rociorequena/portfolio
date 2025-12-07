@@ -1,5 +1,6 @@
 services:
   web:
+    image: pnginxweb
     build: 
       context: ${CONTEXTO}
       dockerfile: ./dockerfiles/sweb/nginx/Dockerfile

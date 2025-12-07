@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  web:
+    # 1. IMAGEN: Corregida la sintaxis para usar la variable de imagen
+    image: ${NOMBRE_IMAGEN:-pnginxweb}:latest 
+    
+    # 2. CONTENEDOR: 
+    container_name: ${NOMBRE}
+    
+    # 3. PUERTOS: Mapea Host (e.g., 8083) al Contenedor (8081).
+    ports:
+      - "${PORT_WEB}:80"
+      
+    # 4. ENTORNO: Busca el .env un nivel arriba.
+    env_file:
+      - ./.env
+      
+    # 5. VOLÚMENES: Montaje del código web y logs
+    # Monta la carpeta 'src' (tu portfolio) al directorio web de Nginx.
+    volumes:
+      - ../src:/var/www/html 
+      - ./logs:/root/logs
+      
+    # 6. RED: Se usa la red definida abajo con la IP estática.
+    networks:
+      netcarontewebnginx:
+          ipv4_address: ${IP}
+
+networks:
+  netcarontewebnginx:
+    # El nombre de la red se basará en el nombre del proyecto y este nombre:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET}

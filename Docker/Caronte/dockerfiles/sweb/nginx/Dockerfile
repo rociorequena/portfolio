@@ -1,17 +1,18 @@
 FROM rocio21/ubbase
+
+ARG SOURCE_PATH=proyectos/pweb/portfolio/src
+
 USER root
-RUN apt update && apt install -yq --no-install-recommends \
-    nginx
-
-
-RUN chown -R www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 755 /var/www/html
+
+COPY ${SOURCE_PATH} /var/www/html
 
 RUN mkdir -p /var/log/nginx
 EXPOSE 80
 
-RUN mkdir -p /root/admin/sweb/nginx
-COPY ./dockerfiles/sweb/nginx /root/admin/sweb/nginx
-RUN chmod +x /root/admin/sweb/nginx/admin/start.sh
-WORKDIR /root/admin/sweb/nginx
-ENTRYPOINT ["./admin/start.sh"]
+COPY ./dockerfiles/sweb/nginx/admin/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+WORKDIR /
+ENTRYPOINT ["/usr/local/bin/start.sh"]

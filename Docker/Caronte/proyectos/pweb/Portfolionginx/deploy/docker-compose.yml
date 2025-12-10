@@ -1,19 +1,23 @@
-version: '3.8'
-
 services:
   web:
-    image: ${NOMBRE_IMAGEN:-pnginxweb}:latest 
+    image: pnginxweb:latest 
+    
+    
+    
     container_name: ${NOMBRE}
     ports:
-      - "${PORT_WEB}:80"
+      - "${PORT_WEB}:80" 
+      
     env_file:
-      - ./.env
+      - ./.env 
+      
     volumes:
-      - ../src:/var/www/html 
+      - ../../portfolio/src:/var/www/html 
       - ./logs:/root/logs 
+      
     networks:
       netcarontewebnginx:
-          ipv4_address: ${IP}
+        ipv4_address: ${IP}
 
 networks:
   netcarontewebnginx:
